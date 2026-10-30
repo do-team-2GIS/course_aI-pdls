@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI-PDLC: как меняется разработка с AI</title><style>
+:root{--bg:#f1f1f1;--surface:#fff;--text:#141414;--secondary:#4d4d4d;--line:#e3e3e3;--green:#23CC29;--yellow:#FFC74A;--blue:#1B61E1;--red:#FE5766;--grey:#e6e6e6;--radius:12px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 Inter,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:#186035;text-underline-offset:4px}a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}p{margin:0 0 16px}p:last-child{margin-bottom:0}strong{font-weight:650}h1,h2,h3,h4{font-weight:650;line-height:1.14;letter-spacing:-.025em}h1{font-size:clamp(38px,5.6vw,68px);max-width:850px;margin:46px 0 0}h2{font-size:clamp(28px,3.5vw,38px);margin:0}h3{font-size:24px;margin:0 0 22px}h4{font-size:19px;margin:0 0 20px}.page{max-width:1200px;margin:auto;padding:26px 26px 64px}.course-name{font-size:13px;font-weight:600;margin:0 0 18px}.cover{padding:30px 34px 36px;border-radius:4px;background:radial-gradient(40% 55% at 65% 25%,#f3f2a8 0,transparent 70%),radial-gradient(40% 60% at 90% 45%,#b6ecb0 0,transparent 70%),radial-gradient(45% 55% at 40% 100%,#9ccfff 0,transparent 70%),linear-gradient(180deg,#f6f9fb,#eef6f1)}.cover-meta{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--secondary)}.cover-subtitle{margin-top:22px;font-size:16px;color:var(--secondary)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 245px;gap:36px;margin-top:28px;align-items:start}.content{min-width:0}.toc{position:sticky;top:22px;max-height:calc(100vh - 44px);overflow:auto;scrollbar-width:thin;font-size:12.5px;line-height:1.4}.toc-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#666;margin:0 0 12px}.toc a{display:flex;gap:10px;padding:12px 5px;border-top:1px solid #cfcfcf;text-decoration:none;color:var(--secondary)}.toc a:last-child{border-bottom:1px solid #cfcfcf}.toc a:hover,.toc a[aria-current]{color:#141414;background:#e7f7ea}.nav-num{font-size:11px;font-variant-numeric:tabular-nums;color:#666;padding-top:2px}.toc a[aria-current] .nav-num{color:#116d20}.text-card,.mode-card{padding:28px 30px;margin:0 0 12px;background:var(--surface);border-radius:var(--radius)}.text-card p,.mode-card p{color:var(--secondary)}.chapter{margin-top:62px;scroll-margin-top:24px}.chapter-head{margin:0 0 22px}.chapter-meta{display:flex;justify-content:space-between;gap:16px;margin:0 0 14px;color:#666;font-size:12px}.chapter-meta span{white-space:nowrap}.mode-card{border-top:4px solid var(--green)}.mode-card:nth-of-type(4n+2){border-color:var(--yellow)}.mode-card:nth-of-type(4n+3){border-color:var(--blue)}.mode-card:nth-of-type(4n+4){border-color:var(--red)}ul{padding-left:23px;margin:18px 0;color:var(--secondary)}li{padding-left:5px;margin:10px 0}li::marker{color:var(--green);font-size:1.2em}li:nth-child(5n+2)::marker{color:var(--yellow)}li:nth-child(5n+3)::marker{color:var(--blue)}li:nth-child(5n+4)::marker{color:var(--red)}li:nth-child(5n+5)::marker{color:var(--grey)}.practice{padding:16px 18px;background:#eff9ef;border-radius:8px;margin-top:22px}.source-note{font-size:14px;border-left:3px solid var(--yellow);padding-left:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f5f5;padding:14px 16px;border-radius:8px;font:13px/1.6 Consolas,monospace;margin:8px 0}pre+pre{margin-top:8px}.table-wrap{margin:24px 0;overflow:auto;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.6}th,td{padding:15px 17px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:#f5f5f5;font-weight:600}td:first-child{width:30%;font-weight:600}tr:last-child td{border-bottom:0}td p{margin:0}.end{margin-top:24px;padding:24px 0;border-top:1px solid #ccc;font-size:13px;color:#666}.top-link{display:inline-block;margin-top:8px}
+@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr) 200px;gap:22px}.page{padding:20px}.text-card,.mode-card{padding:24px}.toc{font-size:12px}}
+@media(max-width:680px){body{font-size:16px}.page{padding:18px 12px 42px}.layout{display:flex;flex-direction:column;gap:22px}.toc{position:static;max-height:none;width:100%;order:-1}.toc a{padding:10px 4px}.cover{padding:24px 22px}h1{margin-top:32px;font-size:40px}.cover-meta{font-size:11px}.text-card,.mode-card{padding:22px 19px}.chapter{margin-top:44px}.chapter-meta{font-size:11px}h3{font-size:22px}.course-name{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:#fff;font-size:11pt}.page{max-width:none;padding:0}.layout{display:block}.toc,.top-link{display:none}.cover{background:#f5f5f5}h1{font-size:32pt}.chapter{break-before:page}.text-card,.mode-card{padding:12px 0}.practice{background:#f5f5f5}h2,h3,h4{break-after:avoid}table{font-size:10pt}}
+
+/* Learning interactions. Source content never depends on scroll animations. */
+.layout{grid-template-columns:230px minmax(0,1fr);gap:34px}.toc{grid-column:1;grid-row:1}.content{grid-column:2;grid-row:1}
+button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.reading-tools{display:none;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;font-size:12px;color:#555}.interactive .reading-tools{display:flex}.reading-tools div{display:flex;flex-wrap:wrap;gap:7px}.reading-tools button{background:#fff;border:1px solid #d4d4d4;border-radius:8px;padding:9px 12px;color:#333}.reading-tools button:hover{background:#e7f7ea}.reading-tools p{width:100%;margin:0}.reading-tools p:empty{display:none}
+.chapter-head{padding:24px 26px;border-radius:4px;background:linear-gradient(115deg,#eaf4ff,#edf7ec 68%,#f6f5d7)}.chapter-meta{color:#515151}.accordion{background:#fff;border-radius:12px;margin:10px 0;overflow:clip;border:1px solid transparent}.accordion summary{list-style:none;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-weight:600;line-height:1.35;font-size:18px;cursor:pointer}.accordion summary::-webkit-details-marker,.list-disclosure summary::-webkit-details-marker{display:none}.accordion summary:after,.list-disclosure summary:after{content:'+';flex:0 0 25px;text-align:center;font-size:23px;font-weight:400;color:#555}.accordion[open]>summary:after,.list-disclosure[open]>summary:after{content:'−'}.accordion[open]>summary{border-bottom:1px solid #e6e6e6}.accordion summary:hover{background:#f7faf7}.accordion-body{padding:24px 26px}.accordion-body p{color:var(--secondary)}.mode-accordion{border-left:4px solid var(--green)}.mode-accordion:nth-of-type(4n+2){border-left-color:var(--yellow)}.mode-accordion:nth-of-type(4n+3){border-left-color:var(--blue)}.mode-accordion:nth-of-type(4n){border-left-color:var(--red)}
+.list-disclosure{margin:20px 0;border:1px solid #ddd;border-radius:9px;padding:0 17px}.list-disclosure summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;padding:12px 0;font-size:15px;font-weight:600}.list-disclosure ul{margin-top:4px;margin-bottom:18px}
+.interaction-hint{font-size:13px;color:#666}.flip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 26px}.flip-card{position:relative;perspective:1000px;--accent:var(--green)}.flip-card:nth-child(5n+2){--accent:var(--yellow)}.flip-card:nth-child(5n+3){--accent:var(--blue)}.flip-card:nth-child(5n+4){--accent:var(--red)}.flip-card:nth-child(5n+5){--accent:var(--grey)}.flip-inner{display:grid;transform-style:preserve-3d;transition:transform .4s ease}.flip-front,.flip-back{padding:24px 25px;border-radius:12px;border:1px solid #ddd;border-top:4px solid var(--accent);background:#f8f8f8;overflow-wrap:anywhere}.flip-front{display:none}.flip-back p{font-size:15px;margin:0}.flip-toggle{display:none}.interactive .flip-front,.interactive .flip-back{display:flex;flex-direction:column;justify-content:center;grid-area:1/1;backface-visibility:hidden;min-height:220px;padding-bottom:44px}.interactive .flip-front{visibility:visible}.interactive .flip-back{transform:rotateY(180deg);visibility:hidden;background:#eff7ef}.interactive .flip-card.is-flipped .flip-inner{transform:rotateY(180deg)}.interactive .flip-card.is-flipped .flip-front{visibility:hidden}.interactive .flip-card.is-flipped .flip-back{visibility:visible}.interactive .flip-toggle{display:block;position:absolute;inset:0;z-index:2;background:transparent;border:0;border-radius:12px}.flip-toggle>span{position:absolute;bottom:12px;right:18px;font-size:20px}.tile-number{font-size:12px;color:#666;margin-bottom:20px}.flip-front h4{font-size:21px;margin:0 0 18px}.flip-hint{font-size:12px;color:#555}.full-reading .flip-inner{transform:none!important;display:block}.full-reading .flip-front{display:none!important}.full-reading .flip-back{transform:none;visibility:visible}.full-reading .flip-toggle{display:none}
+.notes{margin:22px 0 8px;background:#fff7df;border:1px solid #eadcb6;border-radius:12px;padding:23px 26px}.notes label{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px}.note-icon{font-size:23px}.note-prompt{font-size:13px;color:#685a3d;margin:9px 0 14px}.notes textarea{display:block;width:100%;resize:vertical;min-height:120px;line-height:1.6;border:1px solid #d4c59f;border-radius:8px;background:#fffdfa;padding:13px 15px;color:#222}.note-status{font-size:11px;color:#685a3d;margin:10px 0 0}.practice{border-left:3px solid var(--green)}
+@media(max-width:900px){.layout{grid-template-columns:190px minmax(0,1fr);gap:22px}.flip-grid{grid-template-columns:1fr}}
+@media(max-width:680px){.layout{display:flex}.toc{order:-1}.accordion summary,.accordion-body,.notes{padding:20px}.chapter-head{padding:22px 19px}.flip-grid{grid-template-columns:1fr}.reading-tools{align-items:flex-start}.reading-tools div{gap:6px}}
+@media(prefers-reduced-motion:reduce){.flip-inner{transition:none}}
+@media print{.reading-tools,.flip-toggle{display:none!important}.flip-inner{transform:none!important;display:block!important}.flip-front{display:none!important}.flip-back{transform:none!important;visibility:visible!important}.notes{break-inside:avoid}.accordion{overflow:visible}.accordion-body{display:block!important}.accordion summary{font-size:16pt}.chapter-head{background:#f5f5f5}}
+
+.course-case{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border-radius:12px;background:#eef6ff;margin:22px 0;color:#4d4d4d}.course-case svg{width:24px;height:28px;margin-top:2px}.course-case p{margin:0}.intro-title{margin-bottom:22px}
+</style></head><body><main class="page" id="top"><div class="course-name">AI-PDLC: как меняется разработка с AI</div><header class="cover"><div class="cover-meta"><span style="display:inline-flex;align-items:center;gap:7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>≈ 3 часа</span></div><h1>AI-PDLC: как меняется разработка с AI</h1><p class="cover-subtitle">Базовый курс для инженеров</p></header><div class="layout"><nav class="toc" aria-label="Главы курса"><p class="toc-label">Содержание</p><a href="#intro" class="nav-intro">О чём курс</a><a href="#chapter-1"><span class="nav-num">01</span><span>Эволюция разработки</span></a><a href="#chapter-2"><span class="nav-num">02</span><span>Что такое AI-PDLS</span></a><a href="#chapter-3"><span class="nav-num">03</span><span>Что нужно AI-агенту для работы над задачей</span></a><a href="#chapter-4"><span class="nav-num">04</span><span>Как AI участвует в жизненном цикле продукта</span></a><a href="#chapter-5"><span class="nav-num">05</span><span>Как меняется роль инженера с AI-агентами</span></a><a href="#chapter-6"><span class="nav-num">06</span><span>Как поставить задачу AI-агенту</span></a><a href="#chapter-7"><span class="nav-num">07</span><span>Как настроить автономность агента.</span></a><a href="#chapter-8"><span class="nav-num">08</span><span>Инструменты и учебное окружение</span></a><a href="#chapter-9"><span class="nav-num">09</span><span>От постановки к реализации</span></a><a href="#chapter-10"><span class="nav-num">10</span><span>Как проверить результат и дать обратную связь</span></a><a href="#chapter-11"><span class="nav-num">11</span><span>Как перенести подход в свою работу</span></a></nav><article class="content"><section id="intro" class="text-card"><h2 class="intro-title">О чём курс</h2><p data-source="p2">Ты получаешь задачу, разбираешься в требованиях, изучаешь проект, выбираешь решение и пишешь код. Затем запускаешь тесты, исправляешь ошибки и передаёшь изменения на ревью.</p><p data-source="p3">AI может участвовать в каждом из этих действий. При этом меняется и твоя работа: ты определяешь, какой результат нужен, что передать агенту, какие материалы ему понадобятся и как проверить решение.</p><aside class="course-case"><svg viewBox="0 0 24 28" fill="none" stroke="#5486b9" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="13" height="21" rx="3"/><path d="M7 8h7M8 12h5m-3 0v6m7-10h2l2 3v8a2 2 0 0 1-4 0M2 25h17"/></svg><p data-source="p4">В этом курсе разберём этот подход AI-PDLC на одной задаче: добавим фильтр зарядных станций по типу разъёма. Сначала посмотрим, как распределяется работа между человеком и AI. Затем подготовим постановку, определим границы самостоятельности агента и пройдём задачу в учебном проекте.</p></aside><p data-source="p5">К концу курса у тебя будет изменение, которое можно принять по понятным критериям, или конкретный разбор того, что мешает его принять. Вместе с кодом ты сохранишь постановку, результаты проверок и обратную связь агенту. Этот способ работы можно будет перенести в свою задачу.</p><p data-source="p6">Начнём!</p></section><section class="chapter" id="chapter-1">
+<style>
+#chapter-1 .chapter-head{background:radial-gradient(40% 55% at 65% 25%,#f3f2a8 0,transparent 70%),radial-gradient(40% 60% at 90% 45%,#b6ecb0 0,transparent 70%),radial-gradient(45% 55% at 40% 100%,#9ccfff 0,transparent 70%),linear-gradient(180deg,#f6f9fb,#eef6f1)}
+#chapter-1 .evo-intro{font-size:18px;line-height:1.65}
+#chapter-1 .evo-insight{display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;padding:23px 24px;border-radius:14px;background:#fff9ed;margin:22px 0 0;color:#454545}
+#chapter-1 .evo-insight>svg{width:22px;height:27px;margin-top:2px;flex-shrink:0}
+#chapter-1 .evo-insight p{margin:0;color:inherit;font-size:16px;line-height:1.65}
+#chapter-1 .evo-insight strong{color:inherit}
+#chapter-1 .evo-title{font-size:27px;margin:34px 0 22px}
+#chapter-1 .evo-reading{display:grid;gap:16px;margin:0 0 24px}
+#chapter-1 .evo-step{padding:26px 28px;border-radius:14px;background:#fff;border-left:4px solid #e6e6e6}
+#chapter-1 .evo-step h4{font-size:24px;margin:0 0 20px}
+#chapter-1 .evo-step p{color:#4d4d4d;margin-bottom:0}
+#chapter-1 .evo-diagram{margin:24px 0 0;padding:14px 8px;border-radius:10px;background:#f6f6f6;overflow-x:auto}
+#chapter-1 .evo-map{display:block;width:100%;min-width:620px;height:auto;font-family:Inter,"Segoe UI",Arial,sans-serif}
+#chapter-1 .evo-map .node{font-size:13px;font-weight:600;fill:#202020}
+#chapter-1 .evo-map .caption{font-size:12px;fill:#555}
+#chapter-1 .evo-map .edge{fill:none;stroke:#666c69;stroke-width:1.7}
+#chapter-1 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-1 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+#chapter-1 .notes .note-status{color:#716957}
+@media(max-width:760px){#chapter-1 .evo-step{padding:23px 20px}#chapter-1 .evo-insight{padding:20px 18px;gap:12px}#chapter-1 .evo-map{min-width:600px}}
+@media print{#chapter-1 .evo-map{min-width:0}#chapter-1 .evo-step,#chapter-1 .evo-insight,#chapter-1 .evo-diagram{break-inside:avoid}}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 1 из 11<span>≈ 3 мин чтения</span></div><h2>Эволюция разработки</h2></header>
+<div class="text-card"><p class="evo-intro" data-evo="intro">За последние 50 лет разработка прошла несколько больших этапов: от жестко регламентированных процессов с долгим планированием — к гибким командам, а теперь к совместной работе людей и искусственного интеллекта.</p><aside class="evo-insight"><svg viewBox="0 0 24 28" aria-hidden="true"><path d="M12 1a8.5 8.5 0 0 0-6 14.5c1.3 1.3 2.1 2.6 2.3 4.5h7.4c.2-1.9 1-3.2 2.3-4.5A8.5 8.5 0 0 0 12 1Z" fill="#FFC74A"/><path d="M10 4.5c2.6-.8 5.7 1.1 6 3.7" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><path d="M8.5 22h7v1.5a3.5 3.5 0 0 1-7 0Z" fill="#FFC74A"/></svg><p data-evo="shift">Мы переходим от модели <strong>«Люди создают при поддержке инструментов»</strong> к модели <strong>«AI создает при кураторстве людей»</strong> (Human-AI Centaur Model). Это меняет саму экономику разработки.</p></aside></div>
+<h3 class="evo-title">От последовательных этапов к коротким циклам</h3>
+<div class="evo-reading">
+<div class="evo-step"><h4>Waterfall</h4><p data-evo="waterfall">Модель <strong>Waterfall</strong> предполагает последовательный процесс: требования → проектирование → реализация → тестирование → развёртывание. Всё планировалось заранее, изменения были дорогостоящими, а обратная связь приходила слишком поздно. Эта модель хорошо работала для стабильных, предсказуемых систем — но не для быстро меняющегося цифрового мира.</p><figure class="evo-diagram" tabindex="0" role="region" aria-label="Waterfall: требования → проектирование → реализация → тестирование → развёртывание; доступна горизонтальная прокрутка"><svg class="evo-map" viewBox="0 0 700 74" role="img" aria-labelledby="evo-waterfall-title"><title id="evo-waterfall-title">Waterfall: требования → проектирование → реализация → тестирование → развёртывание</title><defs><marker id="evo-waterfall-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#666c69"/></marker></defs><rect x="8" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="70" y="42" text-anchor="middle">Требования</text><path d="M133 37h11" class="edge" marker-end="url(#evo-waterfall-arrow)"/><rect x="146" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="208" y="42" text-anchor="middle">Проектирование</text><path d="M271 37h11" class="edge" marker-end="url(#evo-waterfall-arrow)"/><rect x="284" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="346" y="42" text-anchor="middle">Реализация</text><path d="M409 37h11" class="edge" marker-end="url(#evo-waterfall-arrow)"/><rect x="422" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="484" y="42" text-anchor="middle">Тестирование</text><path d="M547 37h11" class="edge" marker-end="url(#evo-waterfall-arrow)"/><rect x="560" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="622" y="42" text-anchor="middle">Развёртывание</text></svg></figure></div>
+<div class="evo-step"><h4>Agile</h4><p data-evo="agile"><strong>Agile</strong> стал ответом на эту проблему. Он ввёл короткие итерации, регулярную обратную связь и возможность менять план по ходу работы. Команды стали быстрее проверять гипотезы и чаще выпускать полезные изменения. Но осталось «бутылочное горлышко» — скорость написания кода человеком.</p><figure class="evo-diagram" tabindex="0" role="region" aria-label="Agile: короткие циклы с обратной связью; доступна горизонтальная прокрутка"><svg class="evo-map" viewBox="0 0 700 124" role="img" aria-labelledby="evo-agile-title"><title id="evo-agile-title">Agile: короткие циклы с обратной связью</title><defs><marker id="evo-agile-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#666c69"/></marker></defs><rect x="16" y="14" width="198" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="115" y="42" text-anchor="middle">План → работа → результат</text><path d="M196 64v23H34V64" class="edge" marker-end="url(#evo-agile-arrow)"/><text class="caption" x="115" y="112" text-anchor="middle">Обратная связь</text><path d="M218 37h28" class="edge" marker-end="url(#evo-agile-arrow)"/><rect x="251" y="14" width="198" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="350" y="42" text-anchor="middle">План → работа → результат</text><path d="M431 64v23H269V64" class="edge" marker-end="url(#evo-agile-arrow)"/><text class="caption" x="350" y="112" text-anchor="middle">Обратная связь</text><path d="M453 37h28" class="edge" marker-end="url(#evo-agile-arrow)"/><rect x="486" y="14" width="198" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="585" y="42" text-anchor="middle">План → работа → результат</text><path d="M666 64v23H504V64" class="edge" marker-end="url(#evo-agile-arrow)"/><text class="caption" x="585" y="112" text-anchor="middle">Обратная связь</text></svg></figure></div>
+<div class="evo-step"><h4>DevOps</h4><p data-evo="devops"><strong>DevOps</strong> усилил совместную работу разработки и эксплуатации. Автоматизация сборки, тестирования и доставки, а также наблюдаемость помогла командам чаще и надёжнее выпускать изменения. Но создание решения по-прежнему требует много ручной интеллектуальной работы. Новым «бутылочным горлышком» становится когнитивная ёмкость команды.</p><figure class="evo-diagram" tabindex="0" role="region" aria-label="DevOps: разработка, сборка, проверка, доставка и наблюдение с обратной связью; доступна горизонтальная прокрутка"><svg class="evo-map" viewBox="0 0 700 112" role="img" aria-labelledby="evo-devops-title"><title id="evo-devops-title">DevOps: разработка, сборка, проверка, доставка и наблюдение с обратной связью</title><defs><marker id="evo-devops-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#666c69"/></marker></defs><rect x="8" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="70" y="42" text-anchor="middle">Разработка</text><path d="M133 37h11" class="edge" marker-end="url(#evo-devops-arrow)"/><rect x="146" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="208" y="42" text-anchor="middle">Сборка</text><path d="M271 37h11" class="edge" marker-end="url(#evo-devops-arrow)"/><rect x="284" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="346" y="42" text-anchor="middle">Проверка</text><path d="M409 37h11" class="edge" marker-end="url(#evo-devops-arrow)"/><rect x="422" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="484" y="42" text-anchor="middle">Доставка</text><path d="M547 37h11" class="edge" marker-end="url(#evo-devops-arrow)"/><rect x="560" y="14" width="124" height="46" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="node" x="622" y="42" text-anchor="middle">Наблюдение</text><path d="M622 64v23H70V64" class="edge" marker-end="url(#evo-devops-arrow)"/></svg></figure></div>
+</div>
+<div class="text-card"><p data-evo="human">Эти подходы построены вокруг <strong>человека как единственного интеллектуального центра</strong>: он формулирует требования, пишет код, проектирует архитектуру, пишет тесты. AI меняет это уравнение.</p><p data-evo="ai">Сегодня мы проживаем переход от <strong>«команд с AI-помощниками»</strong> — где AI дополняет человека — к <strong>AI-driven PDLS</strong>, где ИИ становится активным участником всего жизненного цикла.</p><figure class="evo-diagram" tabindex="0" role="region" aria-label="AI-driven PDLS: человек задаёт цель, AI выполняет и проверяет, человек принимает результат; доступна горизонтальная прокрутка"><svg class="evo-map" viewBox="0 0 700 124" role="img" aria-labelledby="evo-ai-title"><title id="evo-ai-title">AI-driven PDLS: человек задаёт цель, AI выполняет и проверяет, человек принимает результат</title><defs><marker id="evo-ai-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#666c69"/></marker></defs><rect x="16" y="14" width="180" height="66" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="caption" x="106.0" y="37" text-anchor="middle">Человек</text><text class="node" x="106.0" y="61" text-anchor="middle">Цель и ограничения</text><rect x="247" y="14" width="206" height="66" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="caption" x="350.0" y="37" text-anchor="middle">AI + инструменты</text><text class="node" x="350.0" y="61" text-anchor="middle">Сделать ⇄ проверить</text><rect x="504" y="14" width="180" height="66" rx="9" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/><text class="caption" x="594.0" y="37" text-anchor="middle">Человек</text><text class="node" x="594.0" y="61" text-anchor="middle">Приёмка результата</text><path d="M200 47h42" class="edge" marker-end="url(#evo-ai-arrow)"/><path d="M457 47h42" class="edge" marker-end="url(#evo-ai-arrow)"/><path d="M594 84v23H106V84" class="edge" marker-end="url(#evo-ai-arrow)"/></svg></figure></div>
+<aside class="notes" aria-label="Заметки к главе 1"><label for="note-1"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какие короткие циклы и автоматизированные проверки уже есть в твоей работе? Где участие AI могло бы помочь команде?</p><textarea id="note-1" data-note="1" data-title="Эволюция разработки" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside>
+</section>
+<section class="chapter" id="chapter-2">
+<style>
+#chapter-2 .chapter-head{background:radial-gradient(40% 55% at 65% 25%,#f3f2a8 0,transparent 70%),radial-gradient(40% 60% at 90% 45%,#b6ecb0 0,transparent 70%),radial-gradient(45% 55% at 40% 100%,#9ccfff 0,transparent 70%),linear-gradient(180deg,#f6f9fb,#eef6f1)}
+#chapter-2 .pdlc-intro{font-size:18px;line-height:1.65}
+#chapter-2 .pdlc-insight{display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;padding:23px 24px;border-radius:14px;background:#fff9ed;margin:24px 0;color:#454545}
+#chapter-2 .pdlc-insight>svg{width:22px;height:27px;margin-top:2px}
+#chapter-2 .pdlc-insight p{margin:0;color:inherit;font-size:16px;line-height:1.65}
+#chapter-2 .pdlc-title{font-size:27px;margin:34px 0 22px}
+#chapter-2 .pdlc-shifts{display:grid;gap:16px;margin:0 0 24px}
+#chapter-2 .pdlc-shift{display:grid;grid-template-columns:35px minmax(0,1fr);gap:16px;padding:26px 28px;border-radius:14px;background:#fff;border-left:4px solid #e6e6e6}
+#chapter-2 .pdlc-shift p{color:#4d4d4d;margin:0}
+#chapter-2 .pdlc-number{font-size:14px;font-variant-numeric:tabular-nums;line-height:27px;color:#777}
+#chapter-2 .pdlc-diagram{margin:24px 0 0;padding:14px 8px;border-radius:10px;background:#f6f6f6;overflow-x:auto}
+#chapter-2 .pdlc-map{display:block;width:100%;min-width:600px;height:auto;font-family:Inter,"Segoe UI",Arial,sans-serif}
+#chapter-2 .pdlc-map .node{font-size:16px;font-weight:600;fill:#202020}
+#chapter-2 .pdlc-map .caption{font-size:14px;fill:#555}
+#chapter-2 .pdlc-map .edge{fill:none;stroke:#666c69;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#chapter-2 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-2 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+#chapter-2 .notes .note-status{color:#716957}
+@media(max-width:760px){#chapter-2 .pdlc-shift{padding:23px 20px;grid-template-columns:26px minmax(0,1fr);gap:10px}#chapter-2 .pdlc-insight{padding:20px 18px;gap:12px}}
+@media print{#chapter-2 .pdlc-map{min-width:0}#chapter-2 .pdlc-shift,#chapter-2 .pdlc-insight,#chapter-2 .pdlc-diagram{break-inside:avoid}}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 2 из 11<span>≈ 2 мин чтения</span></div><h2>Что такое AI-PDLS</h2></header>
+<div class="text-card">
+<p class="pdlc-intro" data-pdlc="intro">Работа над продуктом начинается задолго до написания кода и продолжается после его выпуска. Нужно понять проблему пользователя, выбрать решение, реализовать его, проверить и посмотреть, что получилось в реальной работе.</p>
+<p data-pdlc="definition">Этот путь называют <strong>PDLC — Product Development Life Cycle</strong>, жизненный цикл разработки продукта.</p>
+<p data-pdlc="architecture"><strong>AI-driven PDLC</strong> — это архитектура, которая меняет устройство жизненного цикла. Человек отвечает за <strong>цикл намерения</strong>: формулирует задачу, задаёт контекст, ограничения и критерии успеха. ИИ-агент отвечает за <strong>цикл реализации</strong>: помогает анализировать информацию, создавать артефакты и проверять результат.<br>Качество зависит не только от самой модели, но и от <strong>среды, в которой она работает</strong>: контекста, данных, инструментов, правил и проверок.<br>Эти правила и проверки образуют <strong>Governance Mesh — встроенный контур управления</strong>, который действует на каждом шаге процесса, а не только на финальной проверке.</p>
+<figure class="pdlc-diagram" tabindex="0" role="region" aria-label="Два цикла внутри Governance Mesh; доступна горизонтальная прокрутка">
+<svg class="pdlc-map" viewBox="0 0 700 270" role="img" aria-labelledby="pdlc-cycles-title pdlc-cycles-desc">
+<title id="pdlc-cycles-title">Цикл намерения и цикл реализации</title>
+<desc id="pdlc-cycles-desc">Человек формулирует задачу, контекст, ограничения и критерии успеха. ИИ-агент анализирует информацию, создаёт артефакты и проверяет результат. Циклы связаны обратной связью. Governance Mesh охватывает оба цикла.</desc>
+<defs><marker id="pdlc-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#666c69"/></marker></defs>
+<text class="caption" x="22" y="25">Governance Mesh · встроенный контур управления</text>
+<rect x="8" y="42" width="684" height="212" rx="14" fill="none" stroke="#c9c9c9" stroke-width="1.2" stroke-dasharray="5 5"/>
+<rect x="28" y="62" width="280" height="138" rx="10" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/>
+<text class="caption" x="168" y="88" text-anchor="middle">Человек</text>
+<text class="node" x="168" y="116" text-anchor="middle">Цикл намерения</text>
+<text class="caption" x="168" y="148" text-anchor="middle">Задача · контекст</text>
+<text class="caption" x="168" y="173" text-anchor="middle">Ограничения · критерии успеха</text>
+<path class="edge" d="M280 206v13q0 8-8 8H64q-8 0-8-8v-13" marker-end="url(#pdlc-arrow)"/>
+<path class="edge" d="M317 119h65" marker-end="url(#pdlc-arrow)"/>
+<path class="edge" d="M383 150h-65" marker-end="url(#pdlc-arrow)"/>
+<rect x="392" y="62" width="280" height="138" rx="10" fill="#fff" stroke="#d8d8d8" stroke-width="1.2"/>
+<text class="caption" x="532" y="88" text-anchor="middle">ИИ-агент</text>
+<text class="node" x="532" y="116" text-anchor="middle">Цикл реализации</text>
+<text class="caption" x="532" y="148" text-anchor="middle">Анализ · создание артефактов</text>
+<text class="caption" x="532" y="173" text-anchor="middle">Проверка результата</text>
+<path class="edge" d="M644 206v13q0 8-8 8H428q-8 0-8-8v-13" marker-end="url(#pdlc-arrow)"/>
+</svg>
+</figure>
+</div>
+<h3 class="pdlc-title" data-pdlc="shifts">Это изменение строится вокруг трёх сдвигов:</h3>
+<div class="pdlc-shifts">
+<div class="pdlc-shift"><span class="pdlc-number" aria-hidden="true">01</span><p data-pdlc="first">Первый: ИИ-агент становится субъектом цикла реализации, а человек — субъектом цикла намерения.</p></div>
+<div class="pdlc-shift"><span class="pdlc-number" aria-hidden="true">02</span><p data-pdlc="second">Второй: качество результата определяет не выбор модели, а качество среды работы вокруг неё.</p></div>
+<div class="pdlc-shift"><span class="pdlc-number" aria-hidden="true">03</span><p data-pdlc="third">Третий: контур управления встраивается в каждый шаг, а не накладывается финальным барьером.</p></div>
+</div>
+<div class="text-card"><p data-pdlc="next">В следующих главах разберём, как это влияет на работу инженера и меняет его роль. Начнём с конкретной задачи и посмотрим, как в ней распределяется работа между человеком и AI, а также какие материалы нужны для её выполнения.</p></div>
+<aside class="notes" aria-label="Заметки к главе 2"><label for="note-2"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">На каком этапе работы над продуктом тебе пригодится AI?</p><textarea id="note-2" data-note="2" data-title="Что такое AI-PDLS" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside>
+</section>
+<section class="chapter" id="chapter-3">
+<style>
+#chapter-3 .chapter-head{background:radial-gradient(40% 55% at 65% 25%,#f3f2a8 0,transparent 70%),radial-gradient(40% 60% at 90% 45%,#b6ecb0 0,transparent 70%),radial-gradient(45% 55% at 40% 100%,#9ccfff 0,transparent 70%),linear-gradient(180deg,#f6f9fb,#eef6f1)}
+#chapter-3 .task-callout{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:23px 24px;border-radius:14px;background:#eef6ff;margin:22px 0;color:#454545}
+#chapter-3 .task-callout svg{width:24px;height:28px}
+#chapter-3 .task-callout p{margin:0}
+#chapter-3 .task-important{background:#fff9ed}
+#chapter-3 blockquote{margin:20px 0;padding:18px 22px;border-left:4px solid #e6e6e6;background:transparent;border-radius:0 10px 10px 0}
+#chapter-3 .task-material{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0}
+#chapter-3 .task-material summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-3 .task-material summary:after{display:none}
+#chapter-3 .task-material summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-3 .task-material[open]>summary:before{transform:rotate(180deg)}
+#chapter-3 .task-material summary:hover{background:#f4f4f4}
+#chapter-3 .task-material .accordion-body{padding:14px 18px 18px 54px}
+#chapter-3 .task-demo{background:#f6f6f6;border:1px solid #e6e6e6;border-radius:12px;padding:20px;margin:22px 0}
+#chapter-3 .task-demo legend{font-size:14px;padding:0 8px;color:#555}
+#chapter-3 .task-options{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+#chapter-3 .task-options label{display:flex;align-items:center;gap:7px;border:1px solid #d8d8d8;border-radius:8px;background:#fff;padding:8px 12px;cursor:pointer}
+#chapter-3 .task-options input{accent-color:#666}
+#chapter-3 .task-station{background:#fff;padding:16px;border:1px solid #d8d8d8;border-radius:10px}
+#chapter-3 .task-demo output{display:block;font-size:14px;margin-top:8px;color:#555}
+#chapter-3 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-3 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+@media(max-width:680px){#chapter-3 .task-callout{padding:20px 18px;gap:12px}}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 3 из 11<span>≈ 4 мин чтения</span></div><h2>Что нужно AI-агенту для работы над задачей</h2></header>
+<div class="text-card">
+<p data-task-text="0"><strong>На протяжении курса будем работать с одной задачей: добавим фильтр зарядных станций по типу разъёма.</strong></p>
+<aside class="task-callout"><svg viewBox="0 0 24 28" fill="none" stroke="#5486b9" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="13" height="21" rx="3"/><path d="M7 8h7M8 12h5m-3 0v6m7-10h2l2 3v8a2 2 0 0 1-4 0M2 25h17"/></svg><p data-task-text="1">Пользователь открывает карту зарядных станций. Чтобы узнать, подойдёт ли станция его автомобилю, приходится открывать каждую карточку. Мы хотим добавить фильтр: пользователь выбирает тип разъёма и видит подходящие станции.</p></aside>
+</div>
+<div class="text-card"><h3>Как распределяется работа</h3>
+<p data-task-text="2">На первый взгляд задача звучит просто: «добавить фильтр зарядных станций по типу разъёма». Но такая формулировка оставляет много вопросов. Что делать, если у станции несколько типов разъёмов? Как обрабатывать станции без данных? Должен ли новый фильтр работать вместе с уже существующими?</p><p data-task-text="3">Команда определяет ожидаемое поведение. Например:</p><blockquote><p data-task-text="4">Если пользователь выбрал Type 2, станция с разъёмами Type 2 и CCS должна остаться на карте. Совпадения хотя бы с одним разъёмом достаточно.</p></blockquote>
+<fieldset class="task-demo"><legend>Пример фильтра</legend><div class="task-options"><label><input type="radio" name="task-connector" value="all" checked>Все разъёмы</label><label><input type="radio" name="task-connector" value="type2">Type 2</label><label><input type="radio" name="task-connector" value="ccs">CCS</label></div><div class="task-station">Станция: Type 2 + CCS<output id="task-filter-result" aria-live="polite">Станция на карте: фильтр не выбран.</output></div></fieldset>
+<p data-task-text="5">Аналитик помогает уточнить потребность, правила и критерии приёмки. Разработчик связывает их с устройством проекта: определяет, какие данные и участки кода нужны, какие ограничения важно учесть и как проверить изменение. В конкретной команде часть этой работы может выполнять один человек.</p><p data-task-text="6">AI-агенту можно поручить изучение кода, подготовку вариантов решения, реализацию и часть проверок. Чем больше работы ты передаёшь ему, тем важнее явно описать ожидаемый результат и границы самостоятельности.</p><p data-task-text="7">Например, AI-агент может заметить, что в данных один разъём записан под разными названиями, и предложить варианты обработки. Решение о том, какие значения считать одинаковыми, нужно согласовать с командой. Затем его можно включить в постановку и проверки.</p>
+</div>
+<div class="text-card"><h3>Какие материалы нужны для работы</h3><p data-task-text="8">Одного общего описания задачи недостаточно. Для нашего фильтра понадобятся:</p>
+<details class="accordion task-material"><summary>Цель</summary><div class="accordion-body"><p>помочь пользователю найти станцию с нужным разъёмом.</p></div></details>
+<details class="accordion task-material"><summary>Правила</summary><div class="accordion-body"><p>как отбирать станции с несколькими разъёмами или без данных.</p></div></details>
+<details class="accordion task-material"><summary>Ограничения</summary><div class="accordion-body"><p>что можно менять в проекте и какие решения нужно согласовать.</p></div></details>
+<details class="accordion task-material"><summary>Примеры</summary><div class="accordion-body"><p>какие станции должны попасть в результат.</p></div></details>
+<details class="accordion task-material"><summary>Проверки</summary><div class="accordion-body"><p>как убедиться, что фильтр работает и не ломает существующий поиск.</p></div></details>
+<p data-task-text="9">В разработке такие результаты работы называют артефактами: это требования, схемы, код, тесты, отчёты о проверках. Они связывают задачу, реализацию и приёмку. AI-агент использует их при работе, а ты — при оценке результата.</p>
+</div>
+<div class="text-card">
+<p data-task-text="10">Некоторые примеры поведения можно связать с автоматическими тестами. Тогда они становятся исполняемой спецификацией: описывают ожидаемое поведение и позволяют проверить его запуском тестов.</p><p data-task-text="11">Например, сценарий со станцией Type 2 + CCS превращается в проверку: при выборе Type 2 станция остаётся в выдаче. AI-агент может помочь написать такой тест, а инженер проверяет, что тест действительно проверяет согласованное правило.</p>
+<aside class="task-callout task-important"><svg viewBox="0 0 24 28" aria-hidden="true"><path d="M12 1a8.5 8.5 0 0 0-6 14.5c1.3 1.3 2.1 2.6 2.3 4.5h7.4c.2-1.9 1-3.2 2.3-4.5A8.5 8.5 0 0 0 12 1Z" fill="#FFC74A"/><path d="M10 4.5c2.6-.8 5.7 1.1 6 3.7" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><path d="M8.5 22h7v1.5a3.5 3.5 0 0 1-7 0Z" fill="#FFC74A"/></svg><p data-task-text="12">Само по себе описание, которое получил AI-агент, ещё не становится исполняемым. Для этого нужна связь с запускаемой проверкой. Исполняемые спецификации применялись и&nbsp;до&nbsp;AI. Теперь AI-агент может помогать их создавать и поддерживать при изменении требований.</p></aside>
+<p data-task-text="13">Для нашего кейса важно также различать совместимость разъёма и доступность станции. Наличие Type 2 не означает, что станция сейчас свободна или исправна. Фильтр должен решать именно ту задачу, о которой договорилась команда.</p>
+</div>
+<div class="text-card"><p data-task-text="14">Теперь на примере фильтра мы разобрали, как распределяется работа и какие материалы связывают задачу с её проверкой. В следующей главе пройдём весь путь этого изменения — от уточнения потребности до эксплуатации — и посмотрим, где можно подключить AI-агента.</p><p data-task-text="15">Чтобы это заработало, нужно разобраться в данных, определить правила отбора, изменить интерфейс и проверить, что существующий поиск продолжает работать.</p><p data-task-text="16">AI может помочь на каждом из этих шагов. Но сначала нужно договориться, какой результат нам нужен.</p></div>
+<aside class="notes" aria-label="Заметки к главе 3"><label for="note-3"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какие материалы нужны для твоей задачи?</p><textarea id="note-3" data-note="3" data-title="Что нужно AI-агенту для работы над задачей" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside>
+<script>
+(()=>{const root=document.getElementById('chapter-3');const output=root.querySelector('#task-filter-result');root.querySelectorAll('input[name="task-connector"]').forEach(input=>input.addEventListener('change',()=>{output.textContent=input.value==='all'?'Станция на карте: фильтр не выбран.':'Станция остаётся на карте: есть разъём '+(input.value==='type2'?'Type 2':'CCS')+'.';}));})();
+</script>
+</section>
+<section class="chapter" id="chapter-4"><header class="chapter-head"><div class="chapter-meta">Глава 4 из 11<span>≈ 2 мин чтения</span></div><h2 data-source="p51">Как AI участвует в жизненном цикле продукта</h2></header><div class="text-card">
+<p data-source="p52">У команды уже есть цель, правила отбора и примеры ожидаемого поведения фильтра. Теперь посмотрим на весь путь изменения и определим, какую работу AI-агент может выполнять на разных этапах PDLC.</p>
+<p>Возможности агента зависят от того, какие данные, инструменты и разрешения доступны ему в рабочей среде.</p>
+<p data-source="p53">В таблице — примеры задач, которые можно поручить AI-агенту при наличии нужных данных, инструментов и разрешений.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col"><p><strong>Этап</strong></p></th><th scope="col"><p><strong>Что можно поручить AI-агенту</strong></p></th></tr></thead><tbody><tr><td><p>Уточнение потребности</p></td><td><p>Разобрать предоставленные обращения пользователей, найти неясности в требованиях и предложить уточняющие вопросы</p></td></tr><tr><td><p>Проектирование</p></td><td><p>Изучить структуру проекта и предложить, где добавить фильтрацию</p></td></tr><tr><td><p>Реализация</p></td><td><p>Изменить код и интерфейс с учётом согласованных правил</p></td></tr><tr><td><p>Проверка</p></td><td><p>Подготовить и запустить тесты, найти пропущенные случаи, проверить сочетание с другими фильтрами</p></td></tr><tr><td><p>Выпуск</p></td><td><p>Подготовить описание изменения и выполнить разрешённые проверки перед выпуском</p></td></tr><tr><td><p>Эксплуатация</p></td><td><p>Помочь разобрать доступные логи и ошибки после выпуска</p></td></tr><tr><td><p>Улучшение</p></td><td><p>Проанализировать данные использования и предложить, что проверить или изменить дальше</p></td></tr></tbody></table></div>
+<p data-source="p55">Результаты работы AI-агента проверяются по правилам команды. Решение о выпуске принимается в установленном процессе: успешный запуск тестов сам по себе не даёт агенту разрешения выкладывать изменение пользователям.</p>
+<p>На каждом этапе важно определить не только задачу агента, но и границы его самостоятельности: какие действия он может выполнять сам, что должен показать инженеру и в каких случаях обязан остановиться и запросить решение человека.</p>
+<p data-source="p56">Мы увидели, где AI-агент может участвовать в работе над фильтром. Следующий вопрос — как организовать это участие на практике: давать отдельные поручения, контролировать работу агента по шагам или настроить более самостоятельный цикл выполнения и проверки. В следующей главе сравним четыре способа работы над той же задачей.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 4"><label for="note-4"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какие действия ты готов передать AI на разных этапах?</p><textarea id="note-4" data-note="4" data-title="Как AI участвует в жизненном цикле продукта" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-5">
+<style>
+#chapter-5 .role-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0}
+#chapter-5 .role-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-5 .role-accordion summary:after{display:none}
+#chapter-5 .role-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-5 .role-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-5 .role-accordion summary:hover{background:#f4f4f4}
+#chapter-5 .role-accordion .accordion-body{background:#fafafa}
+#chapter-5 .role-responsibility{background:#f5f5f5;border-radius:10px;padding:16px 18px;margin:12px 0}
+#chapter-5 .role-responsibility p{margin:0}
+#chapter-5 .role-responsibility p+p{margin-top:12px}
+#chapter-5 ol{padding-left:24px;color:#4d4d4d}
+#chapter-5 ol li::marker{color:#666;font-size:1em}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 5 из 11<span>≈ 5 мин чтения</span></div><h2 data-source="p57">Как меняется роль инженера с AI-агентами</h2></header><div class="text-card">
+<p data-source="p58">В предыдущей главе мы прошли весь путь изменения. Теперь сосредоточимся на реализации и проверке фильтра: задача остаётся той же, а способ взаимодействия с AI будет меняться — от отдельных подсказок в чате с AI до самостоятельной работы AI-агентов в заданных границах.</p>
+<p data-source="p59">Можно использовать отдельные подсказки в чате, поручить задачу агенту под пошаговым контролем, разделить работу между агентами или настроить самостоятельный цикл выполнения и проверки.</p>
+<p data-source="p60">Разница — в том, что ты делегируешь и в каких точках принимаешь решения. Посмотри четыре примера и обрати внимание: что ты передаёшь AI-агенту и чем продолжаешь управлять сам?</p>
+</div>
+<div class="text-card"><h3 data-source="p61">Одна задача - четыре способа работы</h3>
+<p data-source="p62">Открой каждый блок по очереди.</p>
+<details class="accordion role-accordion"><summary>01 · Подсказки AI</summary><div class="accordion-body">
+<p data-source="p63">Ты сам разбираешь задачу и выбираешь решение. Открываешь нужный файл, начинаешь писать функцию, а AI предлагает продолжение. Ты принимаешь подсказку, меняешь её или отклоняешь.</p>
+<p data-source="p64">Например, ты уже определил, где применять фильтр и как хранить типы разъёмов. AI помогает написать условие отбора станций. Затем ты просишь его предложить тесты. Весь ход работы остаётся у тебя: ты решаешь, что делать дальше, куда внести изменения и как их проверить.</p>
+<div class="role-responsibility"><p data-source="p65"><strong>Что передаёшь AI:</strong> отдельные фрагменты работы — дописать код, объяснить функцию, предложить тест.</p>
+<p data-source="p66"><strong>Чем управляешь ты:</strong> ходом работы и каждым изменением</p></div>
+</div></details>
+<details class="accordion role-accordion"><summary>02 · Агент под пошаговым контролем</summary><div class="accordion-body">
+<p data-source="p67">Теперь ты поручаешь AI-агенту законченную задачу: добавить фильтр в существующий проект. Здесь тебе нужен — AI, который может пользоваться инструментами: читать файлы проекта, менять код, запускать команды и тесты. Доступные действия зависят от его рабочей среды и разрешений. Агент изучает проект и предлагает план. Ты проверяешь план. Он вносит изменения — ты смотришь, что изменилось. Он добавляет тесты — ты оцениваешь, покрывают ли они нужные случаи. Такой режим помогает познакомиться с агентом и увидеть, где ему нужны уточнения. Но если постоянно подтверждать каждое действие, агент будет ждать тебя даже там, где мог бы продолжить сам.</p>
+<div class="role-responsibility"><p data-source="p68"><strong>Что передаёшь агенту:</strong> выполнение задачи под твоим пошаговым контролем. Возникает следующий вопрос: какую часть проверки тоже можно передать AI?</p>
+<p data-source="p69"><strong>Чем управляешь ты:</strong> планом, отдельными шагами и проверками</p></div>
+</div></details>
+<details class="accordion role-accordion"><summary>03 · Агенты с разными ролями</summary><div class="accordion-body">
+<p data-source="p70">Работу можно разделить между несколькими агентами. Для нашего примера возьмём три роли:</p>
+<ol>
+<li data-source="p71">Архитектор изучает проект и предлагает, где и как добавить фильтрацию.</li>
+<li data-source="p72">Разработчик вносит изменения и пишет тесты.</li>
+<li data-source="p73">Ревьюер проверяет решение: соответствует ли оно задаче, какие ошибки и пропущенные случаи в нём есть.</li>
+</ol>
+<p data-source="p74">Например, разработчик добавил фильтр, а ревьюер заметил: у станции может быть несколько разъёмов, но код учитывает только один. Замечание нужно передать разработчику, получить исправление и проверить его снова. В этом режиме ты организуешь взаимодействие: задаёшь роли, передаёшь результаты между агентами и разбираешь спорные замечания. Если агентов два, один может совмещать проектирование и разработку, а второй — проверять результат.</p>
+<div class="role-responsibility"><p data-source="p75"><strong>Что передаёшь агентам:</strong> выполнение задачи и часть ревью.</p>
+<p data-source="p76"><strong>Чем управляешь ты:</strong> передачей результатов и спорными решениями.</p></div>
+</div></details>
+<details class="accordion role-accordion"><summary>04 · Самостоятельный цикл</summary><div class="accordion-body">
+<p data-source="p77">Теперь порядок совместной работы настроен заранее. Агент-координатор распределяет подзадачи, собирает результаты и следит за выполнением общей цели. Исполнители разрабатывают решение, запускают проверки и возвращают замечания на исправление. Если ревьюер находит ошибку с несколькими разъёмами, разработчик получает замечание, исправляет код и запускает тесты снова. Тебе не нужно вручную сопровождать каждую передачу. Ты заранее определяешь ожидаемый результат, ограничения и ситуации, в которых агенты должны обратиться к тебе. Например, они могут менять код в учебной ветке и запускать тесты, но изменение внешнего API нужно согласовать.</p>
+<p data-source="p78">Сделать → проверить → исправить → проверить снова.</p>
+<p data-source="p79">Цикл продолжается до выполнения критериев или до условия остановки. Если не хватает данных, требования противоречат друг другу или исчерпан лимит попыток, задача возвращается к человеку с объяснением проблемы.</p>
+<div class="role-responsibility"><p data-source="p80"><strong>Что передаёшь агентам:</strong> выполнение, координацию и повторные проверки в заданных границах. Ты принимаешь результат и решения, которые оставлены за человеком.</p>
+<p data-source="p81">Для небольшой задачи может хватить одного агента, который реализует решение и запускает проверки. Количество агентов само по себе не говорит о качестве результата.</p>
+<p data-source="p82"><strong>Чем управляешь ты:</strong> целью, полномочиями и приёмкой</p></div>
+</div></details>
+</div>
+<div class="text-card">
+<p data-source="p83">Эти способы можно сочетать. Для понятного изменения дать агенту больше самостоятельности, а при работе с незнакомой частью системы сначала вместе разобрать план.</p>
+<p data-source="p84">Во всех случаях тебе нужно понимать устройство проекта и последствия изменения. Агент может предложить архитектуру и написать код. Инженер оценивает решение, разбирает спорные места и отвечает за его принятие. Если для этого нужно самому прочитать или исправить код, это остаётся частью работы.</p>
+<p data-source="p85">Дальше посмотрим, почему такой подход затрагивает весь путь от идеи до результата у пользователя.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 5"><label for="note-5"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какой режим работы подходит для твоей задачи и почему?</p><textarea id="note-5" data-note="5" data-title="Как меняется роль инженера с AI-агентами" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-6">
+<style>
+#chapter-6 .task-brief,#chapter-6 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0}
+#chapter-6 .task-brief{background:#eef6ff;color:#5486b9}
+#chapter-6 .practice{background:#eff9ef;color:#527b55}
+#chapter-6 .task-brief svg,#chapter-6 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-6 .task-brief p,#chapter-6 .practice p{margin:0;color:#4d4d4d}
+#chapter-6 .flip-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#chapter-6 .flip-front,#chapter-6 .flip-back{border:1px solid #dedede;border-radius:10px;background:#f6f6f6;padding:18px 15px 42px;min-height:235px}
+#chapter-6 .flip-front h4{font-size:18px;line-height:1.25}
+#chapter-6 .flip-back p{font-size:14px;line-height:1.55}
+#chapter-6 .tile-number{margin-bottom:14px}
+#chapter-6 .brief-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-6 .brief-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-6 .brief-accordion summary:after{display:none}
+#chapter-6 .brief-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-6 .brief-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-6 .brief-accordion summary:hover{background:#f4f4f4}
+@media(max-width:900px){#chapter-6 .flip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){#chapter-6 .flip-grid{grid-template-columns:1fr}#chapter-6 .flip-front,#chapter-6 .flip-back{min-height:190px}}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 6 из 11<span>≈ 6 мин чтения</span></div><h2 data-source="p86">Как поставить задачу AI-агенту</h2></header><div class="text-card">
+<p data-source="p87">Когда ты реализуешь задачу сам, часть решений принимаешь по ходу работы: замечаешь особенность данных, вспоминаешь договорённость команды, уточняешь поведение. При передаче работы агенту эти решения нужно сделать явными. Иначе недостающее он может заполнить собственными предположениями.</p>
+<aside class="task-brief"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p88">Давай подготовим постановку для фильтра зарядных станций. По ней агент предложит решение, а ты проверишь результат.</p></aside>
+</div>
+<div class="text-card"><h3 data-source="p89">Шаг 1. Начни с результата</h3>
+<p data-source="p90">Открой бизнес-требование. Нужно добавить фильтр по типу разъёма в интерфейс и API, сохранив существующие фильтры и поиск. Доступные типы: Type 2, CCS, CHAdeMO и GB/T.</p>
+<p data-source="p91">Запрос «добавь фильтр» оставляет вопросы. Как отбирать станцию с несколькими разъёмами? Что делать, если сведений о них нет? Как фильтр сочетается с поиском? Если не определить поведение, агент может заполнить пробелы своими предположениями.</p>
+<p data-source="p92">Начни с того, что должно измениться для пользователя. «Добавить селект» описывает элемент интерфейса. Намерение — дать пользователю возможность выбрать разъём и найти подходящие станции, продолжая пользоваться поиском.</p>
+<p data-source="p93">Подход, в котором работа строится вокруг ожидаемого поведения и критериев результата, называется intent-centric. Ты определяешь, что система должна делать и в каких условиях, а агент предлагает реализацию. Это позволяет делегировать исполнение, сохраняя за собой оценку решения и его последствий.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p94">Сделай: запиши цель в одном-двух предложениях. Проверь: из неё понятно, какую задачу пользователя решаем? Появление нового элемента интерфейса ещё не означает, что цель достигнута.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p95">Шаг 2. Собери постановку</h3>
+<p data-source="p96">Создай заметку «Задача и результаты практики». Собери в ней шесть частей:</p>
+<p class="interaction-hint">Шесть частей постановки. Нажми на карточку, чтобы прочитать пояснение.</p><div class="flip-grid">
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-97" aria-label="Перевернуть карточку: Цель"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">01</span><h4>Цель</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-97"><p data-source="p97">Что должно измениться для пользователя.</p></div></div></div>
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-98" aria-label="Перевернуть карточку: Контекст"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">02</span><h4>Контекст</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-98"><p data-source="p98">На какие файлы, данные и правила проекта опираться.</p></div></div></div>
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-99" aria-label="Перевернуть карточку: Поведение"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">03</span><h4>Поведение</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-99"><p data-source="p99">Что происходит при выборе, смене и сбросе фильтра, в том числе в особых случаях.</p></div></div></div>
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-100" aria-label="Перевернуть карточку: Ограничения"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">04</span><h4>Ограничения</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-100"><p data-source="p100">Что не входит в задачу и какие решения нужно согласовать.</p></div></div></div>
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-101" aria-label="Перевернуть карточку: Критерии приёмки"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">05</span><h4>Критерии приёмки</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-101"><p data-source="p101">По каким наблюдаемым признакам ты определишь, что задача решена.</p></div></div></div>
+<div class="flip-card"><button type="button" class="flip-toggle" aria-expanded="false" aria-controls="flip-back-102" aria-label="Перевернуть карточку: Результат работы агента"><span>↻</span></button><div class="flip-inner"><div class="flip-front" aria-hidden="true"><span class="tile-number">06</span><h4>Результат работы агента</h4><span class="flip-hint">Перевернуть ↻</span></div><div class="flip-back" id="flip-back-102"><p data-source="p102">Какие изменения и подтверждения он должен передать: код, тесты, отчёт о проверках и ограничения.</p></div></div></div>
+</div>
+<p data-source="p103">Такой набор называют <strong>Intent Package — пакет задачи.</strong> Он связывает намерение с контекстом, ограничениями и проверками. План, код и тесты должны опираться на одну согласованную постановку. Иначе агент может правильно реализовать одно поведение, а проверить другое.</p>
+<p data-source="p104">Не обязательно помещать всё в один большой промпт. Часть сведений уже есть в документации и коде: дай ссылки на актуальные источники, а в заметке сохрани решения, которых там нет.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p105">Сделай: заполни черновик. Открой data/stations.json и посмотри разные записи, а не только первые две. Выпиши особенности, которые влияют на фильтрацию. Для каждой определи ожидаемое поведение или запиши вопрос, который нужно решить до реализации. Не исправляй исходные данные ради упрощения задачи.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p106">Шаг 3. Сделай критерии проверяемыми</h3>
+<p data-source="p107">«Фильтр работает корректно» не объясняет, что проверять. Хороший критерий задаёт условия и ожидаемый результат. Например:</p>
+<p data-source="p108"><strong>Дано:</strong> у станции есть разъёмы Type 2 и CCS.</p>
+<p data-source="p109"><strong>Когда:</strong> пользователь выбирает CCS.</p>
+<p data-source="p110"><strong>Тогда:</strong> станция остаётся в выдаче ровно один раз.</p>
+<p data-source="p111">По этому сценарию можно создать автоматический тест. Когда описание поведения связано с проверкой, которую действительно можно запустить, получается исполняемая спецификация. Один сценарий помогает договориться о требовании, реализовать его и проверить результат. Одного оформления «дано — когда — тогда» для этого недостаточно.</p>
+<p data-source="p112">Сам тест тоже нужно сопоставить с требованием. Если агент написал код, который учитывает только первый разъём, и тестирует лишь станции с одним разъёмом, тесты могут пройти. Ошибка останется. Поэтому сначала определяй ожидаемое поведение, затем проверяй, подтверждают ли его тесты.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p113">Сделай: сформулируй 5–9 критериев по требованию и данным. Для каждого укажи пример: исходные условия, действие и ожидаемый результат. Учти сценарии использования фильтра, найденные особенности данных, API и сохранение существующего поиска.</p></div>
+<p data-source="p114">Готового списка в требовании намеренно нет: составить его — часть практики. Пример выше показывает форму критерия, но не заменяет твою постановку.</p>
+</div>
+<div class="text-card"><h3 data-source="p115">Шаг 4. Подготовь контекст</h3>
+<p data-source="p116">Контекст — материалы, на которые агент опирается при выполнении задачи. Постановка объясняет, что нужно получить. Контекст помогает сделать это в существующем проекте.</p>
+<p data-source="p117">Без него агент может написать работающую функцию, но добавить лишнюю зависимость, продублировать готовую логику или изменить формат ответа API. Управление контекстом — часть инженерной работы: выбрать нужные источники, проверить их актуальность и сохранить важные решения.</p>
+<p data-source="p118">Для фильтра нужны требование, данные станций, существующая фильтрация, шаблон страницы и тесты. Не добавляй сразу все документы команды. Дай основные источники и возможность изучить связанные файлы. Убедись, что агент может их прочитать.</p>
+<p data-source="p119">Разделяй правила проекта и сведения одной задачи:</p>
+<ul>
+<li data-source="p120">В md — устройство проекта, расположение данных, команды проверок и ограничения, которые пригодятся повторно.</li>
+<li data-source="p121">В постановке фильтра — ожидаемое поведение функции, её критерии и согласованные решения.</li>
+</ul>
+<p data-source="p122">Если правило уточнилось в переписке, сохрани его в соответствующем файле или заметке. Новый диалог или агент-ревьюер не должен восстанавливать договорённости по памяти.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p123">Сделай: открой AGENTS.md. Посмотри существующие правила и раздел TODO. Запиши, что нужно дополнить после знакомства с локальным проектом. Пока не выдумывай неизвестное: в главе 8 ты проверишь сведения вместе с агентом и завершишь подготовку контекста.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p124">Шаг 5. Проверь постановку перед следующим шагом</h3>
+<details class="accordion brief-accordion"><summary>Проверка постановки</summary><div class="accordion-body">
+<ul>
+<li data-source="p125">Понятно, какой результат нужен пользователю.</li>
+<li data-source="p126">Описано поведение, а не только название новой функции.</li>
+<li data-source="p127">Для критериев есть примеры с ожидаемым результатом.</li>
+<li data-source="p128">Указаны источники контекста и ограничения.</li>
+<li data-source="p129">Неизвестные сведения отмечены вопросами, а не подменены предположениями.</li>
+</ul>
+</div></details>
+<p data-source="p130">У тебя есть черновик постановки, по которому можно обсуждать решение и проверять результат. Дальше определим, что агент сможет делать самостоятельно, а с какими решениями должен вернуться к тебе.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 6"><label for="note-6"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Запиши цель, контекст, поведение, ограничения и критерии.</p><textarea id="note-6" data-note="6" data-title="Как поставить задачу AI-агенту" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-7">
+<style>
+#chapter-7 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0;background:#eff9ef;color:#527b55}
+#chapter-7 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-7 .practice p{margin:0;color:#4d4d4d}
+#chapter-7 .control-points{padding-left:24px;color:#4d4d4d}
+#chapter-7 .control-points li::marker{color:#666;font-size:1em}
+#chapter-7 .stop-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-7 .stop-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-7 .stop-accordion summary:after{display:none}
+#chapter-7 .stop-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-7 .stop-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-7 .stop-accordion summary:hover{background:#f4f4f4}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 7 из 11<span>≈ 5 мин чтения</span></div><h2 data-source="p131">Как настроить автономность агента.</h2></header><div class="text-card">
+<p data-source="p132">Если подтверждать каждое чтение файла и запуск теста, агент будет ждать тебя даже в понятных шагах. Чтобы передать больше исполнения, нужны проверяемый результат, доступные проверки и границы действий.</p>
+<p data-source="p133">Самостоятельность задаётся для конкретных действий. В одной задаче агент может сам исправлять локальную функцию, но должен согласовать изменение публичного API. Чем шире последствия действия и труднее проверить результат, тем важнее участие человека до его выполнения.</p>
+</div>
+<div class="text-card"><h3 data-source="p134">Шаг 1. Выбери действия для самостоятельной работы агента</h3>
+<p data-source="p135">Для фильтра можно поручить агенту реализовать согласованные правила отбора, добавить тесты и исправлять ошибки по их результатам. Если же он предлагает скрывать все offline-станции, это уже решение о поведении продукта. Наличие нужного разъёма и доступность станции — разные свойства. Такое изменение нужно обсудить.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p136">Сделай: посмотри на свою постановку. Выдели действия, для которых понятны ожидаемый результат и способ проверки. Если правило ещё не определено, сначала уточни его — агенту не стоит передавать право решать этот вопрос молча.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p137">Шаг 2. Зафиксируй границы</h3>
+<p data-source="p138">Управление работой агента — governance — включает полномочия, правила согласования и ответственность за решения. Агент выполняет работу в заданных границах. Ты определяешь эти границы, разбираешь существенные вопросы и принимаешь результат.</p>
+<p data-source="p139">Запиши правила конкретно. «Действуй осторожно» не объясняет, что разрешено. «Добавляй тесты самостоятельно, новые зависимости согласуй» задаёт понятную границу.</p>
+<p data-source="p140">Для нашей практики можно начать с такого разделения:</p>
+<ul>
+<li data-source="p141">Можно самостоятельно: изучать учебный проект, реализовывать согласованный план в рабочей ветке, добавлять тесты и исправлять ошибки в рамках задачи.</li>
+<li data-source="p142">Нужно согласовать заранее: новые зависимости, изменение правил отбора, расширение области задачи и изменения API за пределами принятого плана.</li>
+<li data-source="p143">Не входит в разрешение на реализацию: публикация ветки, создание MR, слияние и выпуск. К передаче результата вернёмся отдельно.</li>
+</ul>
+<p data-source="p144">Добавление фильтра требует расширить API. Сначала агент предлагает параметр и его поведение в плане, ты согласуешь решение. После этого он может реализовать именно это расширение без повторного запроса на каждое связанное изменение.</p>
+<p data-source="p145">Исходный датасет сохраняем. Существующие тесты нельзя отключать или ослаблять ради успешного прогона. Работа должна соответствовать критериям, а не менять проверки под получившийся код.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p147">Сделай: добавь эти группы действий в постановку и уточни под свой план. При настройке окружения поддержи их разрешениями инструмента: инструкция в сообщении не заменяет ограничения доступа. Отдельная ветка изолирует изменения в Git, но не ограничивает доступ агента к другим файлам и системам.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p148">Шаг 3. Определи условия остановки</h3>
+<p data-source="p149">Самостоятельная работа включает цикл «сделать → проверить → исправить». Агент может повторять его, пока действует в пределах задачи. Если продолжение требует нового решения или проверки недоступны, нужно вернуть вопрос человеку.</p>
+<p data-source="p150">Например, агент нашёл неизвестное обозначение разъёма. Считать его аналогом известного по сходству названий нельзя без согласованного правила. Здесь нужно уточнение постановки, а не ещё одна попытка написать условие.</p>
+<p data-source="p151">Для практики задай условия остановки:</p>
+<details class="accordion stop-accordion"><summary>Условия остановки</summary><div class="accordion-body">
+<ul>
+<li data-source="p152">Не хватает данных или требования противоречат друг другу.</li>
+<li data-source="p153">Для продолжения нужны действия за пределами полномочий.</li>
+<li data-source="p154">Обязательная проверка недоступна, и агент не может восстановить её запуск разрешёнными действиями.</li>
+<li data-source="p155">Одна проблема остаётся после двух попыток исправления. Две попытки — выбранный предел этой практики, а не универсальное правило.</li>
+</ul>
+</div></details>
+<p data-source="p156">При остановке агент должен вернуть: в чём проблема, что уже попробовал, какие результаты получил и какое решение нужно от тебя. Сообщения «не получилось» недостаточно для продолжения.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p157">Сделай: запиши условия остановки и формат сообщения о блокере. Укажи, что агент должен сохранить сделанные изменения и результаты проверок, а не удалять их ради новой попытки.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p158">Шаг 4. Выбери точки контроля</h3>
+<p data-source="p159">В основной практике у тебя две контрольные точки:</p>
+<ol class="control-points">
+<li data-source="p160">До реализации: проверить постановку и план, согласовать существенные решения и полномочия.</li>
+<li data-source="p161">После реализации: сопоставить изменение с критериями и принять решение о результате.</li>
+</ol>
+<p data-source="p162">Между ними агент может выполнять согласованную работу без подтверждения каждого шага. Дополнительное участие нужно, когда сработало условие остановки или появились признаки выхода за границы задачи.</p>
+<p data-source="p163">Ты управляешь решениями, от которых зависит результат. Например, повторный запуск тестов не требует нового согласования, а предложение изменить поведение фильтра требует. Если правило уточнилось, сохрани его в постановке и проверь, что план и проверки учитывают это решение.</p>
+</div>
+<div class="text-card"><h3 data-source="p164">Шаг 5. Договорись о подтверждениях результата</h3>
+<p data-source="p165">В пятой главе ты указал, что агент должен передать вместе с кодом. Теперь уточни формат отчёта: какие файлы изменены и зачем, какие проверки выполнены, что они показали, что осталось непроверенным.</p>
+<p data-source="p166">Так ты сможешь проследить связь между требованием, изменением и проверкой. Отчёт помогает найти подтверждения, но не заменяет просмотр diff, тестов и поведения приложения. Сообщение «всё готово» само по себе не является основанием для приёмки.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p167">Сделай: дополни ожидаемый результат работы агента этим форматом. Убедись, что для каждого обязательного критерия ты сможешь найти проверку или увидеть, почему она не выполнена.</p></div>
+<p data-source="p168">Теперь в постановке есть цель, критерии, полномочия и условия остановки. Дальше подготовим инструменты и учебное окружение, а затем проверим план агента перед реализацией.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 7"><label for="note-7"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Что агент может делать сам? Когда должен остановиться?</p><textarea id="note-7" data-note="7" data-title="Как настроить автономность агента." rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-8">
+<style>
+#chapter-8 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0;background:#eff9ef;color:#527b55}
+#chapter-8 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-8 .practice p{margin:0;color:#4d4d4d}
+#chapter-8 .control-points{padding-left:24px;color:#4d4d4d}
+#chapter-8 .control-points li::marker{color:#666;font-size:1em}
+#chapter-8 .stop-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-8 .stop-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-8 .stop-accordion summary:after{display:none}
+#chapter-8 .stop-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-8 .stop-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-8 .stop-accordion summary:hover{background:#f4f4f4}
+#chapter-8 .guide-link{display:inline-block;background:#eef6ff;border:1px solid #d6e4f2;border-radius:10px;padding:12px 18px;color:#265b91;font-weight:600;text-decoration:none;margin:4px 0 16px}#chapter-8 .guide-link:hover{background:#e1efff}#chapter-8 .notes{background:#fff9ed;border-color:#f0e6d4}</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 8 из 11<span>≈ 4 мин чтения · настройка отдельно</span></div><h2>Инструменты и учебное окружение</h2></header>
+<div class="text-card">
+<aside class="course-case"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p>У тебя уже есть постановка задачи и границы самостоятельности агента. Теперь подготовим OpenCode и учебный проект pdlc-practice-stations — сервис с API, списком зарядных станций и условной картой.</p></aside>
+<h3>Шаг 1. Настрой OpenCode</h3>
+<p>OpenCode — приложение, в котором ты ставишь задачу AI-агенту, видишь его действия и проверяешь результат. Подробная настройка вынесена в руководство.</p>
+<a class="guide-link" href="materials/opencode-dev-guide-v1-v2.html" target="_blank" rel="noopener">Открыть руководство по настройке ↗</a>
+<p>Руководство откроется в новой вкладке. Выбери свою ОС и версию OpenCode, подключи модель, настрой разрешения и проверь первый запуск. Затем вернись в эту главу. Если OpenCode уже установлен, проверь версию командой <code>opencode --version</code>.</p>
+<p>Для начала достаточно рабочей модели и доступа к локальному проекту. Остальные интеграции подключай по мере необходимости. Для корпоративных сервисов понадобится сеть 2ГИС: офис или VPN.</p>
+<details class="accordion stop-accordion"><summary>На что обратить внимание при настройке</summary><div class="accordion-body"><ul><li>Следуй разделу своей версии: инструкции для OpenCode 1 и 2 различаются. В руководстве полный корпоративный сценарий V2 отмечен как непроверенный.</li><li>Выбери модель, разрешённую для данных проекта, и проверь запросы подтверждения действий. Не включай общее автоодобрение ради практики.</li><li>Ключи и токены сохраняй по руководству, не вставляй их в диалог с агентом.</li></ul></div></details>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p>Сделай: выполни проверку первого запуска из руководства. Убедись, что модель отвечает и разрешения настроены.</p></div>
+</div>
+<div class="text-card"><h3>Шаг 2. Открой учебный проект</h3>
+<p>Нужны Git и Python 3.11 или новее. Открой <a href="https://gitlab.2gis.ru/ds/ai-for-dev/pdlc-practice-stations" target="_blank" rel="noopener">учебный репозиторий pdlc-practice-stations ↗</a>, скопируй адрес клонирования из меню Code и клонируй проект. Если доступа нет, получи его у автора курса.</p>
+<p>Материал к практике: <a href="https://gitlab.2gis.ru/ds/ai-for-dev/pdlc-practice-stations/-/blob/master/docs/user-journey.md?ref_type=heads" target="_blank" rel="noopener">пользовательский сценарий — user-journey.md ↗</a>.</p>
+<p>В терминале перейди в папку проекта и на чистой копии создай рабочую ветку:</p>
+<pre><code>git switch -c practice/connector-filter</code></pre>
+<p>Если ветка уже есть, перейди в неё и проверь сохранённые изменения. До первого запуска OpenCode просмотри проектные настройки <code>opencode.json</code>, <code>opencode.jsonc</code> и <code>.opencode/</code>, если они есть. Подробнее — раздел «Чужой репозиторий» в руководстве.</p>
+<p>Запусти OpenCode в папке проекта способом из руководства. Отправь:</p>
+<blockquote style="margin:20px 0;padding:18px 22px;border-left:4px solid #e6e6e6"><p>Найди README.md и AGENTS.md. Укажи пути к ним и коротко объясни, как запустить приложение и проверки. Файлы пока не меняй.</p></blockquote>
+<p>Сверь ответ с файлами. Затем попроси создать <code>opencode-check.txt</code> со словом <code>ok</code>. При базовых разрешениях должен появиться запрос подтверждения. Отклони его и убедись, что файл не появился. Если запрос не возник или файл создан после отказа, вернись к настройке разрешений.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p>Сделай: проверь, что агент видит нужный проект, а отказ в разрешении действительно останавливает изменение.</p></div>
+</div>
+<div class="text-card"><h3>Шаг 3. Проверь готовность к практике</h3>
+<p>Актуальные команды есть в README. Выбери свою ОС, установи зависимости и запусти приложение.</p>
+<details class="accordion stop-accordion"><summary>macOS или Linux</summary><div class="accordion-body"><pre><code>python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e &quot;.[dev]&quot;
+python -m uvicorn app.main:app --reload</code></pre></div></details>
+<details class="accordion stop-accordion"><summary>Windows PowerShell</summary><div class="accordion-body"><p>Этот вариант не требует make и активации окружения.</p><pre><code>python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e &quot;.[dev]&quot;
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload</code></pre></div></details>
+<p>Оставь сервер работающим. Открой <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">учебное приложение ↗</a> и <a href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener">страницу API ↗</a>. Ссылки работают после локального запуска. Если порт занят, добавь <code>--port 8001</code> и замени порт в адресах.</p>
+<p>В приложении уже есть выбор города и поиск, но фильтра по разъёму пока нет. Станции без координат не имеют точки на карте, поэтому число точек и записей в списке может различаться.</p>
+<details class="accordion stop-accordion"><summary>Запусти исходные проверки</summary><div class="accordion-body"><p>Открой второй терминал в корне проекта. На macOS/Linux активируй то же окружение и выполни:</p><pre><code>python -m pytest
+python -m ruff check .</code></pre><p>В Windows используй:</p><pre><code>.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe -m ruff check .</code></pre><p>В исходной версии предусмотрены семь тестов. Сохрани фактические результаты тестов и линтера. Если есть ошибка, выясни причину; не отключай проверку.</p></div></details>
+<p>Через <code>/docs</code> выполни <code>GET /stations</code> для города «Новосибирск», затем добавь <code>q</code> со значением «Красный проспект». Сопоставь ответ с поиском в интерфейсе.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p>Сделай: сохрани результаты исходных проверок в заметке. Перед переходом дальше убедись: приложение и API открываются, агент видит проект, разрешения проверены.</p></div>
+<details class="accordion stop-accordion"><summary>Что понадобится позже</summary><div class="accordion-body"><p>Для передачи результата в главе 10 понадобятся MR Rules и Security Review. Ссылки и способ подключения нужно получить у автора курса: в текущих материалах они ещё не указаны. Подключение GitLab MCP само по себе не подключает эти правила.</p><p>Если хочешь сравнить работу с агентом и ручную работу, прочитай дополнительный шаг главы 11 до начала реализации.</p></div></details>
+<p>Теперь можно переходить к плану реализации фильтра.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 8"><label for="note-8"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какие инструменты настроены? Что ещё нужно проверить?</p><textarea id="note-8" data-note="8" data-title="Инструменты и учебное окружение" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside>
+</section>
+<section class="chapter" id="chapter-9">
+<style>
+#chapter-9 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0;background:#eff9ef;color:#527b55}
+#chapter-9 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-9 .practice p{margin:0;color:#4d4d4d}
+#chapter-9 .control-points{padding-left:24px;color:#4d4d4d}
+#chapter-9 .control-points li::marker{color:#666;font-size:1em}
+#chapter-9 .stop-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-9 .stop-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-9 .stop-accordion summary:after{display:none}
+#chapter-9 .stop-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-9 .stop-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-9 .stop-accordion summary:hover{background:#f4f4f4}
+#chapter-9 blockquote{margin:20px 0;padding:18px 22px;border-left:4px solid #e6e6e6;background:transparent}
+#chapter-9 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-9 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 9 из 11<span>≈ 4 мин чтения</span></div><h2 data-source="p224">От постановки к реализации</h2></header><div class="text-card">
+<aside class="course-case"><svg viewBox="0 0 24 28" fill="none" stroke="#5486b9" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="13" height="21" rx="3"/><path d="M7 8h7M8 12h5m-3 0v6m7-10h2l2 3v8a2 2 0 0 1-4 0M2 25h17"/></svg><p data-source="p225">У тебя есть черновик постановки, критерии и границы самостоятельности. Учебный проект запущен, результаты исходных проверок сохранены. Теперь уточним контекст вместе с агентом, согласуем план и передадим выполнение.</p></aside>
+<h3 data-source="p226">Шаг 1. Разберись в проекте вместе с агентом</h3>
+<p data-source="p227">Перед началом открой docs/measurement-template.md и отметь время старта. Записывай доработки, найденные ошибки и время проверки. Отдельно отметь первый рабочий результат и окончательную приёмку — записи понадобятся в главе 10.</p>
+<p data-source="p228">Попроси агента изучить README, AGENTS.md, требование, данные и существующие тесты. Пока не разрешай реализацию. Цель этого шага — связать твою постановку с устройством проекта и найти вопросы до написания кода.</p>
+<p data-source="p229">Ожидай конкретных ссылок: app/main.py, app/repo.py, app/models.py, app/templates/index.html, data/stations.json и tests/test_stations.py. Открой несколько файлов и проверь объяснение агента. Список путей сам по себе не подтверждает, что он понял их назначение.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p230">Сделай: сопоставь найденные особенности с критериями из главы 5. Уточни постановку и дополни TODO в AGENTS.md. Агент может предложить текст, но сведения должны соответствовать проекту. Сохрани решения, которыми будет пользоваться следующий участник работы.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p231">Шаг 2. Попроси план до кода</h3>
+<p data-source="p232">План помогает проверить направление до появления большого объёма изменений. Он должен связывать требования с реализацией и проверками, а не просто перечислять файлы.</p>
+<p data-source="p234">Согласованность результата — self-consistency — означает, что решение соответствует постановке и существующей системе: её контрактам, типам, подходам и ограничениям. Например, API может правильно фильтровать станции, а страница продолжать показывать прежний набор. Отдельная часть работает, но задача целиком не решена.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p235">Сделай: передай агенту постановку и правила самостоятельности. Попроси план, в котором есть:</p></div>
+<details class="accordion stop-accordion"><summary>Что должно быть в плане</summary><div class="accordion-body">
+<ul>
+<li data-source="p236">затрагиваемые части проекта и способ обработки данных;</li>
+<li data-source="p237">новый параметр API и его поведение;</li>
+<li data-source="p238">изменения страницы и согласованность списка и карты;</li>
+<li data-source="p239">проверки по критериям и сохранение существующего поиска;</li>
+<li data-source="p240">допущения, вопросы и решения, требующие согласования.</li>
+</ul>
+</div></details>
+<p data-source="p241">Не нужно заранее указывать каждую функцию. Важно, чтобы агент предложил решение с учётом существующего проекта и объяснил существенные выборы.</p>
+</div>
+<div class="text-card"><h3 data-source="p242">Шаг 3. Проверь и согласуй план</h3>
+<p data-source="p243">Сверь план с постановкой: покрыты ли критерии, сохранится ли поведение запросов без нового параметра, нужны ли предлагаемые зависимости? Убедись, что особые случаи из данных получили явные правила обработки.</p>
+<p data-source="p244">Если план не подходит, укажи расхождение. Например: «В плане меняется только API. В требовании есть фильтр в интерфейсе. Добавь изменения страницы и способ проверить результат».</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p245">Сделай: согласуй расширение API и остальные существенные решения. Сохрани принятую версию плана рядом с постановкой. Если открытый вопрос влияет на поведение или проверку результата, реши его до реализации соответствующей части.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p246">Шаг 4. Передай выполнение</h3>
+<p data-source="p247">Теперь разреши агенту реализовать согласованный план. Он может проходить цикл «сделать → проверить → исправить → проверить снова» в границах из главы 6. Попроси вернуть изменения и подтверждения по согласованному формату.</p>
+<p data-source="p248">Пока агент работает, реагируй на блокеры и запросы решений. Не требуется подтверждать каждое чтение файла или повторный запуск теста. Если агент выходит за границы задачи или повторяет неудачные попытки сверх договорённого предела, остановись и разбери причину.</p>
+</div>
+<div class="text-card"><h3 data-source="p249">Шаг 5. Уточняй постановку при новых вопросах</h3>
+<p data-source="p250">В работе связаны два цикла: намерение — определить нужное поведение, и реализация — получить работающее изменение. Результаты реализации иногда требуют вернуться к постановке.</p>
+<p data-source="p251">Например, агент обнаружил неизвестное обозначение разъёма. Если правило его обработки не определено, нужно решение человека. Если правило уже есть, но код его нарушает, нужна доработка реализации. Эти ситуации нельзя исправлять одинаковым указанием «попробуй ещё раз».</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p252">Сделай: при вопросе к поведению уточни правило и сохрани его в постановке. Проверь, что план и тесты учитывают уточнение. При ошибке реализации верни агенту конкретное расхождение с уже согласованным критерием.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p253">Шаг 6. Проверь готовность к приёмке</h3>
+<p data-source="p254">Получив результат, убедись, что доступны diff, список выполненных проверок, их результаты и непроверенные случаи. Если агент остановился на блокере, зафиксируй его и нужное решение. Не отмечай задачу завершённой только по сообщению агента.</p>
+<p data-source="p255">У тебя есть изменение и материалы для проверки. Дальше сопоставим их с критериями и примем решение о результате.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 9"><label for="note-9"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Сохрани решения по плану и вопросы, возникшие при реализации.</p><textarea id="note-9" data-note="9" data-title="От постановки к реализации" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-10">
+<style>
+#chapter-10 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0;background:#eff9ef;color:#527b55}
+#chapter-10 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-10 .practice p{margin:0;color:#4d4d4d}
+#chapter-10 .control-points{padding-left:24px;color:#4d4d4d}
+#chapter-10 .control-points li::marker{color:#666;font-size:1em}
+#chapter-10 .stop-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-10 .stop-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-10 .stop-accordion summary:after{display:none}
+#chapter-10 .stop-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-10 .stop-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-10 .stop-accordion summary:hover{background:#f4f4f4}
+#chapter-10 blockquote{margin:20px 0;padding:18px 22px;border-left:4px solid #e6e6e6;background:transparent}
+#chapter-10 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-10 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 10 из 11<span>≈ 5 мин чтения</span></div><h2 data-source="p256">Как проверить результат и дать обратную связь</h2></header><div class="text-card">
+<aside class="course-case"><svg viewBox="0 0 24 28" fill="none" stroke="#5486b9" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="13" height="21" rx="3"/><path d="M7 8h7M8 12h5m-3 0v6m7-10h2l2 3v8a2 2 0 0 1-4 0M2 25h17"/></svg><p data-source="p257">Агент подготовил изменение и отчёт. Теперь проверим, соответствует ли фильтр постановке и достаточно ли подтверждений для приёмки. Используй критерии, которые составил до реализации.</p></aside>
+<h3 data-source="p258">Шаг 1. Начни с критериев</h3>
+<p data-source="p259">Валидация — проверка того, что решение соответствует задаче и даёт нужный результат. Она уже началась, когда ты уточнял постановку и проверял план. Во время реализации агент запускал проверки. Теперь ты сопоставляешь готовое изменение с согласованным поведением.</p>
+<p data-source="p260">Проверки дают разные подтверждения. Тест проверяет конкретный сценарий, diff показывает фактическое изменение, работа с интерфейсом помогает оценить действия пользователя. Ни один из этих способов по отдельности не охватывает всю задачу.</p>
+<p data-source="p261">Quality Gates — обязательные условия перехода к следующему шагу. В практике это согласованные критерии поведения и обязательные проверки проекта. Их не подгоняют под готовый код. Если нужная проверка не выполнена, результат ещё не подтверждён.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p262">Сделай: открой свою постановку. Для каждого критерия подготовь место для способа проверки, фактического результата и подтверждения: имени теста, вывода команды или описания выполненного сценария.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p263">Шаг 2. Проведи ревью изменения</h3>
+<p data-source="p264">Открой diff и сравни с планом. Проверь, что изменения относятся к задаче, исходный датасет не упрощён, старые тесты не отключены, а контракт API меняется только согласованным способом.</p>
+<p data-source="p265">Попроси агента провести отдельный проход ревью без исправлений. Если окружение позволяет, подключи другого агента-ревьюера. Передай ему постановку, изменения и результаты проверок. Для замечания нужны нарушенный критерий, место в коде или сценарий воспроизведения.</p>
+<p data-source="p266">Самопроверка полезна, но не независима от автора решения. Два агента тоже могут пропустить одну ошибку. Замечания нужно проверять, а выводы подкреплять конкретными сценариями.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p267">Сделай: раздели замечания на подтверждённые ошибки, вопросы и предложения вне задачи. Не запускай все предложенные доработки автоматически: сначала проверь их связь с постановкой.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p269">Шаг 3. Проверь поведение и тесты</h3>
+<p data-source="p270">Запусти прежние и новые тесты и линтер командами из главы 7. Сопоставь фактический вывод с отчётом агента. Затем посмотри, какие данные и ожидания использованы в новых тестах.</p>
+<p data-source="p271">Если код учитывает только первый разъём станции, тесты на станциях с одним разъёмом могут пройти. Значит, зелёный прогон ещё не подтверждает критерий для нескольких разъёмов. Проверяй связь «требование → сценарий → тест → результат».</p>
+<p data-source="p272">Выполни свои сценарии в API и интерфейсе: выбор, смена и сброс фильтра, особые случаи данных, совместная работа с поиском и городом. Сопоставь список и карту, учитывая, что станции без координат не имеют точки. Одного совпадения количества записей недостаточно.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p273">Сделай: присвой каждому критерию статус «подтверждён», «не выполнен» или «не проверен». Для последнего укажи причину. Если данных для сценария не хватает, подготовь тестовый пример отдельно от исходного датасета, сохранив учебные записи.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p274">Шаг 4. Верни конкретную обратную связь</h3>
+<p data-source="p275">Если нашёл расхождение, опиши данные, действие, фактический и ожидаемый результат. Например:</p>
+<blockquote><p data-source="p276">«У станции nsk-001 есть Type 2 и CCS. При выборе CCS она исчезает из выдачи. По критерию должна остаться. Найди причину, добавь тест, воспроизводящий ошибку, исправь реализацию и повтори связанные проверки».</p></blockquote>
+<p data-source="p277">Это пример возможного дефекта, а не утверждение об ошибке в твоём решении. Подставь свой случай. После исправления повтори исходный сценарий и затронутые проверки. Убедись, что агент не изменил требование ради прохождения теста.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p278">Сделай: сохрани замечание и подтверждение исправления. Если ошибок нет, не придумывай их: разбери пример обратной связи и зафиксируй подтверждённые критерии.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p279">Шаг 5. Прими решение и подготовь передачу</h3>
+<p data-source="p280">Выбери решение и запиши основание:</p>
+<details class="accordion stop-accordion"><summary>Решение о приёмке</summary><div class="accordion-body">
+<ul>
+<li data-source="p281">Принимаю: обязательные критерии подтверждены, существенные замечания устранены, границы изменения соблюдены.</li>
+<li data-source="p282">Возвращаю на доработку: есть конкретное расхождение; понятно, что исправить и как проверить.</li>
+<li data-source="p283">Пока не могу принять: не хватает данных или обязательных проверок; указано, что мешает продолжить.</li>
+</ul>
+</div></details>
+<p data-source="p284">Примени подключённые по инструкции главы 7 ресурсы MR Rules и Security Review. Проверь замечания и устрани подтверждённые проблемы. Если появились исправления, повтори затронутые проверки до окончательной передачи результата.</p>
+<p data-source="p285">Сохрани изменения в коммите и подготовь MR в согласованном пространстве без самостоятельного слияния. В описании укажи задачу, изменение поведения, критерии и подтверждения, результаты ревью и ограничения. Агент может подготовить описание по постановке и diff; проверь, что оно соответствует сделанному.</p>
+<p data-source="p286" class="source-note">[Ссылка для сдачи практики]</p>
+<p data-source="p287">Добавить место публикации ветки, целевую ветку MR, порядок передачи ссылки и получения обратной связи. Если публикация недоступна, указать согласованный способ передачи изменений.</p>
+<p data-source="p288">У тебя есть проверенное изменение и обоснованное решение о приёмке. Дальше разберём опыт и выберем, что перенести в следующую задачу.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 10"><label for="note-10"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Какие критерии подтверждены? Что мешает принять результат?</p><textarea id="note-10" data-note="10" data-title="Как проверить результат и дать обратную связь" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section>
+<section class="chapter" id="chapter-11">
+<style>
+#chapter-11 .practice{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:20px 22px;border:0;border-radius:12px;margin:22px 0;background:#eff9ef;color:#527b55}
+#chapter-11 .practice svg{width:24px;height:24px;margin-top:3px}
+#chapter-11 .practice p{margin:0;color:#4d4d4d}
+#chapter-11 .control-points{padding-left:24px;color:#4d4d4d}
+#chapter-11 .control-points li::marker{color:#666;font-size:1em}
+#chapter-11 .stop-accordion{border:1px solid #dedede;background:#fafafa;border-radius:10px;margin:8px 0 20px}
+#chapter-11 .stop-accordion summary{font-size:16px;padding:12px 18px;justify-content:flex-start;gap:10px}
+#chapter-11 .stop-accordion summary:after{display:none}
+#chapter-11 .stop-accordion summary:before{content:"";flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#e6e6e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233e4345' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") center/17px 17px no-repeat}
+#chapter-11 .stop-accordion[open]>summary:before{transform:rotate(180deg)}
+#chapter-11 .stop-accordion summary:hover{background:#f4f4f4}
+#chapter-11 blockquote{margin:20px 0;padding:18px 22px;border-left:4px solid #e6e6e6;background:transparent}
+#chapter-11 .notes{background:#fff9ed;border:1px solid #f0e6d4}
+#chapter-11 .notes textarea{background:#fffdf8;border-color:#e5dac7}
+</style>
+<header class="chapter-head"><div class="chapter-meta">Глава 11 из 11<span>≈ 5 мин чтения</span></div><h2 data-source="p289">Как перенести подход в свою работу</h2></header><div class="text-card">
+<aside class="course-case"><svg viewBox="0 0 24 28" fill="none" stroke="#5486b9" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="13" height="21" rx="3"/><path d="M7 8h7M8 12h5m-3 0v6m7-10h2l2 3v8a2 2 0 0 1-4 0M2 25h17"/></svg><p data-source="p290">Ты прошёл путь от постановки до проверки результата. Теперь разберём, что помогло агенту работать самостоятельно, где понадобилось твоё решение и что стоит сохранить для следующей задачи. Если практика остановилась на блокере, зафиксируй его: выводы сделать можно, но реализация ещё не завершена.</p></aside>
+<h3 data-source="p291">Шаг 1. Оцени весь путь до результата</h3>
+<p data-source="p292">Скорость генерации кода — только часть работы. Уточнения, ожидание, ревью и исправления тоже занимают время. Быстрый первый вариант может потребовать долгой доработки, а число написанных строк не показывает пользу изменения.</p>
+<p data-source="p294">Открой шаблон замера. Заполни колонку «С агентом» по записям из главы 8. Если время не измерял, так и укажи. Колонку «Руками» оставь пустой, если ручного прохода не было.</p>
+<p data-source="p295">Шаблон содержит время до первого рабочего результата. Отдельно добавь время до окончательной приёмки: первый зелёный прогон может не покрывать важных сценариев. По возможности отдели своё активное время от ожидания агента.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p296">Сделай: запиши число доработок, найденные ошибки, кто их обнаружил и что осталось непроверенным. В строке про ловушки перечисли конкретные случаи. Не ставь «7 из 7» без подтверждений. Отметь, на каком шаге агент помог, а где добавилась работа по проверке или уточнению.</p></div>
+<p data-source="p297">Одна задача не доказывает универсальное ускорение. Эти записи помогут выбрать, что улучшать в следующей попытке.</p>
+</div>
+<div class="text-card"><h3 data-source="p298">Шаг 2. Сохрани то, что можно использовать повторно</h3>
+<p data-source="p299">Повторяемость процесса означает, что команда умеет снова получать проверяемый результат приемлемого качества и разбираться в отклонениях. Она не требует одинакового кода при каждом запросе.</p>
+<p data-source="p300">Для этого нужны сохранённые входные данные и проверки: постановка, версия проекта, актуальные правила, принятые решения и подтверждения результата. Иначе следующий диалог начнётся с тех же вопросов, а причину отличий будет трудно найти.</p>
+<p data-source="p301">В нашем кейсе агент мог несколько раз искать команду запуска — тогда стоит дополнить AGENTS.md. Если тесты пропустили сочетание поиска и нового фильтра, добавь сценарий. Если в переписке уточнили правило обработки разъёма, перенеси решение в постановку и проверки.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p302">Сделай: выбери одну трудность из своей практики. Определи, чего не хватило: контекста, ясного требования, проверки или границы самостоятельности. Сохрани соответствующее улучшение в проекте или материалах задачи.</p></div>
+<p data-source="p303">Общие правила оставляй в AGENTS.md, поведение фильтра — в его постановке, проверки — в тестах. Если повторяется целый способ работы, его можно оформить в инструкцию или скилл и проверить на следующей задаче.</p>
+</div>
+<div class="text-card"><h3 data-source="p304">Шаг 3. Свяжи результат с пользой для пользователя</h3>
+<p data-source="p305">Успешные тесты подтверждают проверенные сценарии. После выпуска ещё нужно понять, помогает ли функция решить исходную проблему. Пользователь может не заметить фильтр или не понять названия разъёмов, даже если технически всё работает.</p>
+<p data-source="p307">Так замыкается цикл обратной связи: наблюдения после выпуска уточняют намерение следующей задачи. AI может помочь разобрать разрешённые данные и предложить гипотезы, а команда решает, какие выводы подтверждены и что менять.</p>
+<p data-source="p308">Для фильтра можно исследовать, удаётся ли пользователям находить подходящую станцию, и наблюдать ошибки или замедление поиска. Число нажатий на фильтр само по себе ещё не показывает, решена ли потребность.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p309">Сделай: запиши два предложения: какое наблюдение помогло бы оценить пользу фильтра и какой сигнал показал бы регрессию. В учебной практике достаточно описания. Собирать данные реальных пользователей и выпускать изменение не нужно.</p></div>
+</div>
+<div class="text-card"><h3 data-source="p310">Шаг 4. Выбери следующую рабочую задачу</h3>
+<p data-source="p311">Начни с небольшого изменения, для которого понятен результат и доступна проверка до выпуска. Это может быть исправление ошибки, расширение существующей функции или добавление тестов на известные случаи.</p>
+<div class="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 13l3 3 5-6"/></svg><p data-source="p312">Сделай: запиши цель, источники контекста, критерии и границы самостоятельности. Используй структуру из пятой и шестой глав, но уточни её под новый проект. Переноси проверенный способ работы, а не условия учебного фильтра целиком.</p></div>
+<p data-source="p313">После выполнения снова разбери одну трудность и обнови материалы. Так опыт постепенно сокращает повторные объяснения и помогает делегировать больше исполнения.</p>
+</div>
+<div class="text-card"><h3 data-source="p314">Шаг 5. Дополнительно сравни ручную работу и работу с агентом</h3>
+<p data-source="p315">Если хочешь провести сравнение, запланируй его до реализации следующей сопоставимой задачи. Подготовь две независимые копии одного исходного коммита. Используй одинаковые требования и проверки, сохраняй результаты в отдельных ветках и не переноси готовое решение между копиями.</p>
+<p data-source="p316">Выполни один проход руками, другой — с агентом. Заполни обе колонки шаблона, учитывая ревью и исправления. Готовую работу не нужно удалять ради нового прогона.</p>
+<p data-source="p317">Учти, что во втором проходе ты уже знаешь задачу. Сравнение поможет разобрать затраты времени и распределение работы, но не докажет, что один способ всегда быстрее.</p>
+<p data-source="p318">Теперь у тебя есть способ пройти задачу с AI: определить результат, подготовить контекст, задать полномочия, передать выполнение и принять решение по подтверждениям. Следующий шаг — применить его в своём проекте.</p>
+</div>
+<aside class="notes" aria-label="Заметки к главе 11"><label for="note-11"><span class="note-icon" aria-hidden="true">✎</span> Мои заметки</label><p class="note-prompt">Что ты перенесёшь в следующую рабочую задачу?</p><textarea id="note-11" data-note="11" data-title="Как перенести подход в свою работу" rows="4" placeholder="Твои выводы, вопросы или результат задания…"></textarea><p class="note-status" role="status">Заметки сохраняются в этом браузере.</p></aside></section><footer class="end"><a class="top-link" href="#top">Вернуться к началу ↑</a></footer></article></div></main><script>(() => {
+ const links = [...document.querySelectorAll('.toc a')];
+ const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+ let pending = false;
+ function update(){let current=0; sections.forEach((s,i)=>{if(s.getBoundingClientRect().top<=100) current=i}); links.forEach((a,i)=>{if(i===current)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});pending=false;}
+ addEventListener('scroll',()=>{if(!pending){pending=true;requestAnimationFrame(update)}},{passive:true});update();
+})();
+(() => {
+ const root=document.documentElement;
+ const flips=[...document.querySelectorAll('.flip-card')];
+ const details=[...document.querySelectorAll('details')];
+ const initialDetails=details.map(d=>d.open);
+ function flip(card,state){card.classList.toggle('is-flipped',state);card.querySelector('button').setAttribute('aria-expanded',String(state));card.querySelector('.flip-front').setAttribute('aria-hidden',String(state));card.querySelector('.flip-back').setAttribute('aria-hidden',String(!state));}
+ flips.forEach(card=>{flip(card,false);card.querySelector('button').addEventListener('click',()=>flip(card,!card.classList.contains('is-flipped')))});
+ const status=document.getElementById('tools-status');
+ document.getElementById('expand-all')?.addEventListener('click',()=>{details.forEach(d=>d.open=true);flips.forEach(c=>flip(c,true));root.classList.add('full-reading');status.textContent='Все блоки раскрыты. Пояснения к карточкам видны.'});
+ document.getElementById('compact-all')?.addEventListener('click',()=>{details.forEach(d=>d.open=false);root.classList.remove('full-reading');flips.forEach(c=>flip(c,false));status.textContent='Блоки свёрнуты. Нажми на заголовок, чтобы раскрыть нужный.'});
+ const notes=[...document.querySelectorAll('[data-note]')];
+ notes.forEach(field=>{
+   const key='ai-pdlc-course:notes:v1:'+field.dataset.note;
+   const feedback=field.closest('.notes').querySelector('.note-status');
+   try{const value=localStorage.getItem(key);if(value!==null){field.value=value;feedback.textContent='Заметка восстановлена из этого браузера.'}}catch(e){feedback.textContent='Автосохранение недоступно. Скачай заметки перед закрытием страницы.'}
+   field.addEventListener('input',()=>{try{localStorage.setItem(key,field.value);feedback.textContent='Сохранено в этом браузере.'}catch(e){feedback.textContent='Автосохранение недоступно. Скачай заметки перед закрытием страницы.'}});
+ });
+ document.getElementById('export-notes')?.addEventListener('click',()=>{
+   const entries=notes.filter(n=>n.value.trim());
+   if(!entries.length){status.textContent='Добавь заметку в любой главе, чтобы скачать файл.';return;}
+   const text='AI-PDLC — мои заметки\n\n'+entries.map(n=>'Глава '+n.dataset.note+'. '+n.dataset.title+'\n'+n.value).join('\n\n');
+   const url=URL.createObjectURL(new Blob(['\uFEFF'+text],{type:'text/plain;charset=utf-8'}));
+   const a=document.createElement('a');a.href=url;a.download='AI-PDLC-notes.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);status.textContent='Файл заметок подготовлен для скачивания.';
+ });
+ let printState;
+ addEventListener('beforeprint',()=>{printState={details:details.map(d=>d.open),full:root.classList.contains('full-reading')};details.forEach(d=>d.open=true);root.classList.add('full-reading')});
+ addEventListener('afterprint',()=>{if(!printState)return;details.forEach((d,i)=>d.open=printState.details[i]);root.classList.toggle('full-reading',printState.full)});
+ root.classList.add('interactive');
+})();
+</script></body></html>
